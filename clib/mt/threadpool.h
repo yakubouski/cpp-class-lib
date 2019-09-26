@@ -31,7 +31,7 @@ namespace c {
 		void hire(size_t NumWorkers, WorkerType Type);
 
 		template<typename F, typename Tuple, size_t ...S >
-		static inline decltype(auto)  apply_tuple_impl(F&& fn, Tuple&& t, std::index_sequence<S...>)
+		static inline decltype(auto)  apply_tuple_impl( F&& fn, Tuple&& t, std::index_sequence<S...>)
 		{
 			return fn(std::get<S>(std::forward<Tuple>(t))...);
 		}
@@ -40,7 +40,7 @@ namespace c {
 		{
 			std::size_t constexpr tSize
 				= std::tuple_size<typename std::remove_reference<Tuple>::type>::value;
-			return apply_tuple_impl(std::forward<F>(fn),
+			return apply_tuple_impl( std::forward<F>(fn),
 				std::forward<Tuple>(t),
 				std::make_index_sequence<tSize>());
 		}
@@ -76,8 +76,9 @@ namespace c {
 		* Enqueue job with class handler
 		*/
 		template<class CLASS, class... Args>
-		void enqueue(Args&& ... args) {
+		void enqueue(Args ... args) {
 
+			//std::pair<bool, std::tuple<typename std::remove_reference<Args>::type...>> obj(true, std::tuple<Args...>(args...));
 			auto args_list = std::tuple<Args...>(args...);
 
 			size_t numWorkers = 0, numTasks = 0;
@@ -86,7 +87,11 @@ namespace c {
 				if (!PoolYet)
 					throw std::runtime_error("enqueue on stopped ThreadPool");
 
-				PoolTasks.emplace([args_list]() { CLASS obj; apply_from_tuple(obj, args_list); });
+				PoolTasks.emplace([args_list]() {
+					CLASS obj;
+					apply_from_tuple(obj, args_list);
+					//return obj(std::forward<typename std::remove_reference<Tuple>::type>::value...>(args_list));
+				});
 
 				numWorkers = PoolWorkers.size();
 				numTasks = PoolTasks.size();
@@ -99,13 +104,13 @@ namespace c {
 		* Enqueue job with lambda or function handler
 		*/
 		template<class FN, class... Args>
-		auto enqueue(FN&& f, Args&& ... args) -> std::future<typename std::result_of<FN(Args...)>::type> {
+		auto enqueue(FN&& f, Args ... args) -> std::future<typename std::result_of<FN(Args...)>::type> {
 
 			using return_type = typename std::result_of<FN(Args...)>::type;
 
 			auto task = std::make_shared< std::packaged_task<return_type()> >(
 				std::bind(std::forward<FN>(f), std::forward<Args>(args)...)
-				);
+			);
 
 			size_t numWorkers = 0, numTasks = 0;
 			std::future<return_type> res = task->get_future();

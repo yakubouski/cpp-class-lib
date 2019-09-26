@@ -6,11 +6,20 @@
     <ClCompile Include="clib\cfg\cmdline.cpp" />
     <ClCompile Include="clib\ci\option.cpp" />
     <ClCompile Include="example_option_value.cpp" />
+    <ClCompile Include="example_ini.cpp" />
+    <ClCompile Include="clib\cfg\ini.cpp" />
+    <ClCompile Include="clib\mt\threadpool.cpp" />
+    <ClCompile Include="example_treadpool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="clib\cfg\cmdline.h" />
     <ClInclude Include="clib\ci\chrono.h" />
     <ClInclude Include="clib\ci\option.h" />
+    <ClInclude Include="clib\cfg\ini.h" />
+    <ClInclude Include="clib\mt\threadpool.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.sample" />
   </ItemGroup>
 </Project>

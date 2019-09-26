@@ -2,6 +2,7 @@
 #include <string>
 #include <set>
 #include <unordered_map>
+#include <deque>
 
 namespace c {
 	class option {
@@ -9,7 +10,6 @@ namespace c {
 		bool		opt_empty;
 	public:
 		option(const std::string& def_value = {}) : opt_value(def_value), opt_empty(true) { ; }
-		option(const std::string& val,const std::string& def_value = {}) : opt_value( def_value), opt_empty(true) { ; }
 
 		inline auto& set(const std::string& v) { opt_value = v; opt_empty = false; return *this; }
 		inline bool isset() { return !opt_empty; }
@@ -23,9 +23,14 @@ namespace c {
 		size_t seconds();
 
 		/*
-		* Convert time string aka [<H>h [<M>m ]] <S>[s] to seconds
+		* Convert value to integer value
 		*/
 		ssize_t number(size_t base = 10);
+
+		/*
+		* Convert value to float value
+		*/
+		double decimal(ssize_t precision = -1);
 
 		/*
 		* Convert string to number of byte (<N>[G|M|K|B])
@@ -38,6 +43,11 @@ namespace c {
 		* at9-at3, et3-et5 expanded to at3,at4,at5,at6,at7,at8,at9,et3,et4,et5
 		*/
 		std::set<std::string> sequence(const std::string& delimiter_chain = ",", const std::string& delimiter_range = "-", bool trim_values = true);
+
+		/*
+		* Split string
+		*/
+		std::deque<std::string> split(const std::string& delimiter, bool trim_values = true);
 
 		/*
 		* Expand dsn string aka <proto>://<user>:<pwd>@<host>:<port></path/to/><filename>?<opt1>=<val1>&<opt2>=<val2>

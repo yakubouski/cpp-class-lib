@@ -84,12 +84,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" />
   <ItemGroup>
     <ClCompile Include="cfg\cmdline.cpp" />
+    <ClCompile Include="cfg\ini.cpp" />
     <ClCompile Include="ci\option.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mt\threadpool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cfg\cmdline.h" />
+    <ClInclude Include="cfg\ini.h" />
     <ClInclude Include="ci\chrono.h" />
     <ClInclude Include="ci\option.h" />
     <ClInclude Include="locale\cvt.h" />
@@ -98,6 +100,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cfg\README.md" />
     <None Include="ci\README.md" />
     <None Include="mm\README.md" />
     <None Include="mt\README.md" />

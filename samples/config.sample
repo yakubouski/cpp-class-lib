@@ -1,0 +1,35 @@
+# structred ini config file. NOT tab or space aligned (tabs only for human redable)
+[section-1]
+	[[sub-section-1]]
+		value = 5	#comment
+	[[sub-section-2]]
+		string = "string # value"
+
+		[[[level-sub-section-2]]]
+		string = test value
+
+# root section 2 
+[section-2]
+	string =	multiline string value line 1 \ 
+				line 2 \
+				line3
+	[[sub-section-1]]
+		delay = 5h 3m 10s
+
+[enum-example]
+	[[enum-1]]
+		value-1-1 = 1
+		value-1-2 = 2
+	[[enum-2]]
+		value-2-1 = 1
+		value-2-2 = 2
+	[[enum-3]]
+	# empty section - skipped
+
+	[[enum-4]]
+	[[enum-5]]
+		value-5-2 = 2
+	[[enum-6]]
+		value-6-1 = 1
+		value-6-1 = 2	# key not unique in section, value is skipped
+		value-6-3 = 3

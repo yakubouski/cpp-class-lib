@@ -1,7 +1,7 @@
 #include "option.h"
 #include <list>
-#include <unordered_map>
 #include <regex>
+#include <cmath>
 
 namespace c {
 	namespace ci {
@@ -17,7 +17,7 @@ namespace c {
 
 		static inline decltype(auto) explode_string(const std::string& string, const std::string& delimiter, bool trim) {
 			/* explode chains */
-			std::list<std::string> list;
+			std::deque<std::string> list;
 			size_t start = 0;
 			size_t end = string.find(delimiter);
 			if (!string.empty()) {
@@ -110,6 +110,19 @@ ssize_t c::option::number(size_t base) {
 	return 0;
 }
 
+double c::option::decimal(ssize_t precision) {
+	if (!opt_value.empty()) {
+		if (precision == -1) {
+			return std::stod(opt_value, nullptr);
+		}
+		else {
+			auto div = std::pow(10., (double)precision);
+			return ((double)std::lround(std::stod(opt_value, nullptr) * div + 0.5)) / (double)div;
+		}
+	}
+	return 0.0f;
+}
+
 
 /*
 * Convert string to number of byte (<N>[G|M|K|B])
@@ -147,6 +160,11 @@ std::set<std::string> c::option::sequence(const std::string& delimiter_chain, co
 	return result;
 }
 
+std::deque<std::string> c::option::split(const std::string& delimiter, bool trim_values) {
+	return c::ci::explode_string(opt_value, delimiter, trim_values);
+}
+
+
 /*
 * Expand dsn string aka <proto>://<user>:<pwd>@<host>:<port></path/to/><filename>?<opt1>=<val1>&<opt2>=<val2>
 */
@@ -165,22 +183,44 @@ c::option::dsn_params c::option::dsn() {
 
 	std::smatch match;
 	if (std::regex_search(opt_value, match, re_urn) && match.size() > 1) {
-		proto = match.str(1); if (proto.empty()) { proto = "file"; }
-		user = match.str(2);
-		pwd = match.str(3);
-		host = match.str(4);
-		port = match.str(5);
-		std::string pathname = match.str(6);
-		path = pathname.substr(0, pathname.find_last_of('/') + 1);
-		filename = pathname.substr(pathname.find_last_of('/') + 1);
-		{
-			std::string opts(match.str(7));
-			std::sregex_iterator next(opts.begin(), opts.end(), re_opt);
-			std::sregex_iterator end;
-			while (next != end) {
-				std::smatch omatch = *next;
-				options.emplace(omatch[1].str(), omatch[2].str());
-				next++;
+		proto = match.str(1);
+		if (!proto.empty() && proto != "file") {
+			user = match.str(2);
+			pwd = match.str(3);
+			host = match.str(4);
+			port = match.str(5);
+			std::string pathname = match.str(6);
+			path = pathname.substr(0, pathname.find_last_of('/') + 1);
+			filename = pathname.substr(pathname.find_last_of('/') + 1);
+			{
+				std::string opts(match.str(7));
+				std::sregex_iterator next(opts.begin(), opts.end(), re_opt);
+				std::sregex_iterator end;
+				while (next != end) {
+					std::smatch omatch = *next;
+					options.emplace(omatch[1].str(), omatch[2].str());
+					next++;
+				}
+			}
+		}
+		else {
+			std::string pathname;
+			if (match.prefix().compare("/") == 0) {
+				pathname = "/";
+			}
+			proto = "file";
+			pathname += match.str(4) + match.str(6);
+			path = pathname.substr(0, pathname.find_last_of('/') + 1);
+			filename = pathname.substr(pathname.find_last_of('/') + 1);
+			{
+				std::string opts(match.str(7));
+				std::sregex_iterator next(opts.begin(), opts.end(), re_opt);
+				std::sregex_iterator end;
+				while (next != end) {
+					std::smatch omatch = *next;
+					options.emplace(omatch[1].str(), omatch[2].str());
+					next++;
+				}
 			}
 		}
 	}
