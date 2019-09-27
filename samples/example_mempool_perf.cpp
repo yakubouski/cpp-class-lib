@@ -47,7 +47,7 @@ void example_mempool_perf(int argc, char* argv[]) {
 		int n{0};
 		uint8_t buffer[2048];
 	};
-	size_t rounds = 100, elements = 1000;
+	size_t rounds = 100, elements = 10000;
 	{
 		printf("std::allocator<%ld,%ld>\n", rounds, elements);
 		test_allocator(std::allocator<mytype>(), rounds, elements);
@@ -58,18 +58,18 @@ void example_mempool_perf(int argc, char* argv[]) {
 		test_allocator(c::mempool<mytype>(elements), rounds, elements);
 	}
 	/*
-	std::allocator<100,1000>
-			total time: 30.21 ms
-			agv round allocate time: 257.46 mks
-			agv round deallocate time: 39.16 mks
-			agv element alloc time: 257.46 ns
-			agv element deallocate time: 39.16 ns
+	std::allocator<100,10000>
+        total time: 468.03 ms
+        agv round allocate time: 3.64 ms
+        agv round deallocate time: 1.04 ms
+        agv element alloc time: 363.84 ns
+        agv element deallocate time: 103.59 ns
 
-	c::mempool<100,1000> no GC
-			total time: 7.29 ms
-			agv round allocate time: 37.37 mks
-			agv round deallocate time: 29.69 mks
-			agv element alloc time: 37.37 ns
-			agv element deallocate time: 29.69 ns
+	c::mempool<100,10000> no GC
+        total time: 61.93 ms
+        agv round allocate time: 281.64 mks
+        agv round deallocate time: 332.84 mks
+        agv element alloc time: 28.16 ns
+        agv element deallocate time: 33.28 ns
 	*/
 }

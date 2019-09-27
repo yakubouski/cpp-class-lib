@@ -96,6 +96,7 @@
     <ClInclude Include="ci\option.h" />
     <ClInclude Include="locale\cvt.h" />
     <ClInclude Include="mm\memcpy.h" />
+    <ClInclude Include="mm\mempool.h" />
     <ClInclude Include="mt\threadpool.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>

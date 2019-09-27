@@ -24,7 +24,7 @@ namespace c {
 		forceinline void construct(pointer ptr) { new(ptr) value_type; }
 		forceinline void construct(pointer ptr, const value_type& val) { new(ptr) value_type(val); }
 		forceinline void construct(pointer ptr, value_type&& val) { new(ptr) value_type(std::move(val)); }
-		forceinline void destroy(pointer ptr) { if (ptr) { ptr->~value_type(); } }
+		forceinline void destroy(pointer ptr) { ptr->~value_type(); }
 
 		forceinline pointer allocate(size_t)
 		{
