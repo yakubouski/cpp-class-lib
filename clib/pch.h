@@ -43,6 +43,8 @@
 
 #endif // !UNICODE
 
+#define UNUSED(v) v;
+
 
 
 

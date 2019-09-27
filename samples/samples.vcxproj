@@ -94,11 +94,12 @@
     <ClCompile Include="clib\cfg\cmdline.cpp" />
     <ClCompile Include="clib\cfg\ini.cpp" />
     <ClCompile Include="clib\ci\option.cpp" />
+    <ClCompile Include="example_mempool_perf.cpp" />
     <ClCompile Include="clib\mt\threadpool.cpp" />
     <ClCompile Include="example_cmdline_option.cpp" />
     <ClCompile Include="example_ini.cpp" />
     <ClCompile Include="example_option_value.cpp" />
-    <ClCompile Include="example_treadpool.cpp" />
+    <ClCompile Include="example_threadpool.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +107,10 @@
     <ClInclude Include="clib\cfg\ini.h" />
     <ClInclude Include="clib\ci\chrono.h" />
     <ClInclude Include="clib\ci\option.h" />
+    <ClInclude Include="clib\mm\memcpy.h" />
+    <ClInclude Include="clib\mm\mempool.h" />
     <ClInclude Include="clib\mt\threadpool.h" />
+    <ClInclude Include="clib\pch.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

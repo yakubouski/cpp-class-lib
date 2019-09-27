@@ -9,7 +9,8 @@
     <ClCompile Include="example_ini.cpp" />
     <ClCompile Include="clib\cfg\ini.cpp" />
     <ClCompile Include="clib\mt\threadpool.cpp" />
-    <ClCompile Include="example_treadpool.cpp" />
+    <ClCompile Include="example_mempool_perf.cpp" />
+    <ClCompile Include="example_threadpool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -18,6 +19,9 @@
     <ClInclude Include="clib\ci\option.h" />
     <ClInclude Include="clib\cfg\ini.h" />
     <ClInclude Include="clib\mt\threadpool.h" />
+    <ClInclude Include="clib\mm\memcpy.h" />
+    <ClInclude Include="clib\pch.h" />
+    <ClInclude Include="clib\mm\mempool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config.sample" />
